@@ -1,5 +1,6 @@
 from JupJup.Login.login import Login
 from selenium.webdriver.common.keys import Keys
+import time
 
 
 class GeneralLogin(Login):
