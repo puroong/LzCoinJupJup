@@ -1,6 +1,7 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import time
+from JupJup import config
 
 
 class PresentCollector:
@@ -19,7 +20,7 @@ class PresentCollector:
         try:
             for collect_btn in collect_btns:
                 collect_btn.click()
-                time.sleep(7)
+                time.sleep(config.WAIT_LONG)
 
         except Exception as e:
             print(e)

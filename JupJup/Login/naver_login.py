@@ -1,6 +1,7 @@
 from JupJup.Login.login import Login
 from selenium.webdriver.common.keys import Keys
 import time
+from JupJup import config
 
 
 class NaverLogin(Login):
@@ -31,7 +32,7 @@ class NaverLogin(Login):
 
         main_menu.click()
         naver_oauth_btn.click()
-        time.sleep(7)
+        time.sleep(config.WAIT_LONG)
 
     def login(self):
         """
@@ -52,7 +53,7 @@ class NaverLogin(Login):
 
             # submit form
             submit_btn.click()
-            time.sleep(7)
+            time.sleep(config.WAIT_LONG)
         except Exception as e:
             print(e)
 

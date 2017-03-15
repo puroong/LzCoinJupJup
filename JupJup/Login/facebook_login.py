@@ -1,6 +1,7 @@
 from JupJup.Login.login import Login
 from selenium.webdriver.common.keys import Keys
 import time
+from JupJup import config
 
 
 class FacebookLogin(Login):
@@ -30,7 +31,7 @@ class FacebookLogin(Login):
 
         main_menu.click()
         facebook_oauth_btn.click()
-        time.sleep(7)
+        time.sleep(config.WAIT_LONG)
 
     def login(self):
         """
@@ -51,7 +52,7 @@ class FacebookLogin(Login):
 
             # submit form
             submit_btn.click()
-            time.sleep(7)
+            time.sleep(config.WAIT_LONG)
         except Exception as e:
             print(e)
 

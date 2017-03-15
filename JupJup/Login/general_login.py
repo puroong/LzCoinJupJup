@@ -1,6 +1,7 @@
 from JupJup.Login.login import Login
 from selenium.webdriver.common.keys import Keys
 import time
+from JupJup import config
 
 
 class GeneralLogin(Login):
@@ -43,7 +44,7 @@ class GeneralLogin(Login):
 
             # submit form
             submit_btn.click()
-            time.sleep(7)
+            time.sleep(config.WAIT_LONG)
         except Exception as e:
             print(e)
 
