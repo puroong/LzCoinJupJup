@@ -22,6 +22,9 @@ class FacebookLogin(Login):
         self.after_login()
 
     def before_login(self):
+        #delete cookies to ensure that facebook login process is always same
+        self.driver.delete_all_cookies()
+
         main_menu = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['MAINMENU'])
         facebook_oauth_btn = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['FACEBOOKOAUTH'])
 
