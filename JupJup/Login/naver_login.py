@@ -35,7 +35,6 @@ class NaverLogin(Login):
             폼을 채운 뒤, 로그인한다.
         """
         try:
-            print(self.driver.current_url)
             # find neccessary elements
             username_form = self.driver.find_element_by_xpath(NaverLogin.XPATHS['USERNAME'])
             password_form = self.driver.find_element_by_xpath(NaverLogin.XPATHS['PASSWORD'])
@@ -55,8 +54,6 @@ class NaverLogin(Login):
             print(e)
 
     def after_login(self):
-        print(self.driver.current_url)
-
         try:
             nosave_btn = self.driver.find_element_by_xpath(NaverLogin.XPATHS['NOSAVE'])
             print(nosave_btn)
