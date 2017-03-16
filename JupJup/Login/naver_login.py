@@ -60,7 +60,6 @@ class NaverLogin(Login):
     def after_login(self):
         try:
             nosave_btn = self.driver.find_element_by_xpath(NaverLogin.XPATHS['NOSAVE'])
-            print(nosave_btn)
             nosave_btn.click()
             time.sleep(7)
         except Exception as e:

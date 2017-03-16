@@ -28,8 +28,6 @@ class ShareFacebook:
             self.facebook_authorize.authorize()
 
         self.post_feed()
-        print(self.driver.window_handles)
-        print(self.driver.current_window_handle)
     def open_facebook(self):
         self.main_window = self.driver.window_handles[0]
 
