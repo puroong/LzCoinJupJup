@@ -10,7 +10,8 @@ class FacebookLogin(Login):
         'FACEBOOKOAUTH': "//button[@class='btn-facebook oauth-connect']",
         'USERNAME': "//input[@id='email']",
         'PASSWORD': "//input[@id='pass']",
-        'SUBMIT': "//button[@id='loginbutton']"
+        'LOGINSUBMIT': "//button[@id='loginbutton']",
+        'AUTHORIZESUBMIT': '//input[@name="login"]'
     }
 
     def __init__(self, driver, data):
@@ -41,7 +42,7 @@ class FacebookLogin(Login):
             # find neccessary elements
             username_form = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['USERNAME'])
             password_form = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['PASSWORD'])
-            submit_btn = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['SUBMIT'])
+            submit_btn = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['LOGINSUBMIT'])
 
             # fill forms
             username_form.clear()
@@ -49,7 +50,6 @@ class FacebookLogin(Login):
 
             password_form.clear()
             password_form.send_keys(self.data['PASSWORD'])
-
             # submit form
             submit_btn.click()
             time.sleep(config.WAIT_LONG)
@@ -59,3 +59,22 @@ class FacebookLogin(Login):
     def after_login(self):
         print(self.driver.current_url)
         pass
+
+    def authorize(self):
+        try:
+            # find neccessary elements
+            username_form = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['USERNAME'])
+            password_form = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['PASSWORD'])
+            submit_btn = self.driver.find_element_by_xpath(FacebookLogin.XPATHS['AUTHORIZESUBMIT'])
+
+            # fill forms
+            username_form.clear()
+            username_form.send_keys(self.data['USERNAME'])
+
+            password_form.clear()
+            password_form.send_keys(self.data['PASSWORD'])
+            # submit form
+            submit_btn.click()
+            time.sleep(config.WAIT_LONG)
+        except Exception as e:
+            print(e)
