@@ -21,6 +21,8 @@ export FACEBOOK_PASSWORD={facebook password}
 
 export TWITTER_USERNAME={twitter email}
 export TWITTER_PASSWORD={twitter password}
+
+python main.py
 ```
 환경변수 설명
 
