@@ -1,6 +1,7 @@
 from selenium import webdriver
 from JupJup import Login, Present, Share
 from JupJup import config
+from multiprocessing import Process
 import time
 
 class CoinJupJupManager:
@@ -12,23 +13,50 @@ class CoinJupJupManager:
         self.collector = Present.collector.PresentCollector(self.driver)
         self.share = Share.share_facebook.ShareFacebook(self.driver)
 
-        self.last_worked_at = time.time()
-        self.worked_today = False
+        self.last_shared_at = time.time()
+        self.last_collected_at = time.time()
 
-    def do_work(self):
+        self.shared_done = True
+        self.collected_done = True
+
+    def start(self):
+        p_collect = Process(target=self.collect_task)
+        p_share = Process(target=self.share_task)
+
+        p_collect.start()
+        p_share.start()
+
+    def collect_task(self):
         while True:
-            if not self.worked_today:
+            if not self.collected_done:
                 self.driver.maximize_window()
 
                 self.attend()
                 self.collect_presents()
+
+                self.collected_done = True
+
+            if time.time() - self.last_collected_at > config.COLLECT_PERIOD:
+                self.last_collected_at = time.time()
+                self.collected_done = False
+
+            time.sleep(config.WORK_PERIOD)
+
+    def share_task(self):
+        while True:
+            if not self.shared_done:
+                self.driver.maximize_window()
+
+                self.attend()
                 self.share_lezhin()
 
-                self.worked_today = True
+                self.shared_done = True
 
-            if time.time() - self.last_worked_at > 86400:
-                self.last_worked_at = time.time()
-                self.worked_today = False
+            if time.time() - self.last_shared_at > config.SHARE_PERIOD:
+                self.last_shared_at = time.time()
+                self.shared_done = False
+
+            time.sleep(config.WORK_PERIOD)
 
     def attend(self):
         print('attend start')
