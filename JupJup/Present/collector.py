@@ -6,7 +6,7 @@ from JupJup import config
 
 class PresentCollector:
     XPATHS = {
-        'COLLECTBTN': '//button[@class="present-getpoint"]'
+        'COLLECTBTN': '//button[contains(@class, "present")]'
     }
 
     def __init__(self, driver):
