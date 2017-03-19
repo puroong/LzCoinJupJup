@@ -34,6 +34,8 @@ class CoinJupJupManager:
                 self.attend()
                 self.collect_presents()
 
+                self.reset()
+
                 self.collected_done = True
 
             if time.time() - self.last_collected_at > config.COLLECT_PERIOD:
@@ -49,6 +51,8 @@ class CoinJupJupManager:
 
                 self.attend()
                 self.share_lezhin()
+
+                self.reset()
 
                 self.shared_done = True
 
@@ -86,3 +90,8 @@ class CoinJupJupManager:
         time.sleep(config.WAIT_LONG)
 
         print('share lezhin finish')
+
+    def reset(self):
+        self.driver.get('https://www.lezhin.com/ko')
+        #delete cookies to ensure that naver login process is always same
+        self.driver.delete_all_cookies()
