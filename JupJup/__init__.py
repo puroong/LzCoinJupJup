@@ -7,17 +7,7 @@ import time
 class CoinJupJupManager:
 
     def __init__(self):
-        self.driver = webdriver.PhantomJS()
         self.data = config.USERDATA
-        self.login = Login.factory.LoginFactory.login_class(config.LOGIN_METHOD, self.driver, self.data)
-        self.collector = Present.collector.PresentCollector(self.driver)
-        self.share = Share.share_facebook.ShareFacebook(self.driver)
-
-        self.last_shared_at = time.time()
-        self.last_collected_at = time.time()
-
-        self.shared_done = True
-        self.collected_done = True
 
     def start(self):
         p_collect = Process(target=self.collect_task)
@@ -27,71 +17,87 @@ class CoinJupJupManager:
         p_share.start()
 
     def collect_task(self):
+        driver = webdriver.PhantomJS()
+
+        login = Login.factory.LoginFactory.login_class(config.LOGIN_METHOD, driver, self.data)
+        collector = Present.collector.PresentCollector(driver)
+
+        last_collected_at = time.time()
+        collected_done = False
+
         while True:
-            if not self.collected_done:
-                self.driver.maximize_window()
+            if not collected_done:
+                driver.maximize_window()
 
-                self.attend()
-                self.collect_presents()
+                self.attend(driver, login)
+                self.collect_presents(driver, collector)
 
-                self.reset()
+                self.reset(driver)
 
-                self.collected_done = True
+                collected_done = True
 
-            if time.time() - self.last_collected_at > config.COLLECT_PERIOD:
-                self.last_collected_at = time.time()
-                self.collected_done = False
+            if time.time() - last_collected_at > config.COLLECT_PERIOD:
+                last_collected_at = time.time()
+                collected_done = False
 
             time.sleep(config.WORK_PERIOD)
 
     def share_task(self):
+        driver = webdriver.PhantomJS()
+
+        login = Login.factory.LoginFactory.login_class(config.LOGIN_METHOD, driver, self.data)
+        share = Share.share_facebook.ShareFacebook(driver)
+
+        last_shared_at = time.time()
+        shared_done = False
+
         while True:
-            if not self.shared_done:
-                self.driver.maximize_window()
+            if not shared_done:
+                driver.maximize_window()
 
-                self.attend()
-                self.share_lezhin()
+                self.attend(driver, login)
+                self.share_lezhin(driver, share)
 
-                self.reset()
+                self.reset(driver)
 
-                self.shared_done = True
+                shared_done = True
 
-            if time.time() - self.last_shared_at > config.SHARE_PERIOD:
-                self.last_shared_at = time.time()
-                self.shared_done = False
+            if time.time() - last_shared_at > config.SHARE_PERIOD:
+                last_shared_at = time.time()
+                shared_done = False
 
             time.sleep(config.WORK_PERIOD)
 
-    def attend(self):
+    def attend(self, driver, login):
         print('attend start')
 
-        self.driver.get('https://www.lezhin.com/ko')
+        driver.get('https://www.lezhin.com/ko')
         time.sleep(config.WAIT_LONG)
-        self.login.do_work()
+        login.do_work()
 
         print('attend finish')
 
-    def collect_presents(self):
+    def collect_presents(self, driver, collector):
         print('present collect start')
 
-        self.driver.get('https://www.lezhin.com/ko/present')
+        driver.get('https://www.lezhin.com/ko/present')
         time.sleep(config.WAIT_LONG)
-        self.collector.collect_all()
+        collector.collect_all()
 
         print('present collect finish')
 
-    def share_lezhin(self):
+    def share_lezhin(self, driver, share):
         print('share lezhin start')
 
-        self.driver.get('https://www.lezhin.com/ko/payment#invite')
+        driver.get('https://www.lezhin.com/ko/payment#invite')
         time.sleep(config.WAIT_LONG)
-        self.share.do_work()
+        share.do_work()
 
         time.sleep(config.WAIT_LONG)
 
         print('share lezhin finish')
 
-    def reset(self):
-        self.driver.get('https://www.lezhin.com/ko')
+    def reset(self, driver):
+        driver.get('https://www.lezhin.com/ko')
         #delete cookies to ensure that naver login process is always same
-        self.driver.delete_all_cookies()
+        driver.delete_all_cookies()
