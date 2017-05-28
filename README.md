@@ -12,15 +12,7 @@ pip install -r requirements.txt
 
 npm -g install phantomjs-prebuilt
 
-export LZCOINJUPJUP_USERNAME={email}
-export LZCOINJUPJUP_PASSWORD={password}
-export LZCOINJUPJUP_LOGIN_METHOD={login_method} ('facebook', 'general', 'naver' 중 하나)
-
-export LZCOINJUPJUP_FB_USERNAME={facebook email}
-export LZCOINJUPJUP_FB_PASSWORD={facebook password}
-
-export LZCOINJUPJUP_TT_USERNAME={twitter email}
-export LZCOINJUPJUP_TT_PASSWORD={twitter password}
+./init.sh
 
 python main.py
 ```
